@@ -4,6 +4,7 @@ new Vue({
     data: {
         // 联系人列表
         contacts: [],
+        
         // 当前编辑的联系人
         currentContact: {
             id: null,
@@ -12,18 +13,23 @@ new Vue({
             email: '',
             address: ''
         },
+        
         // 编辑状态
         isEditing: false,
+        
         // 加载状态
         loading: false,
+        
         // 消息提示
         message: '',
         messageType: 'success'
     },
+    
     // 页面加载时执行
     mounted() {
         this.fetchContacts();
     },
+    
     methods: {
         // 显示消息提示
         showMessage(text, type = 'success') {
@@ -33,6 +39,7 @@ new Vue({
                 this.message = '';
             }, 3000);
         },
+        
         // 获取所有联系人
         async fetchContacts() {
             this.loading = true;
@@ -50,7 +57,8 @@ new Vue({
                 this.loading = false;
             }
         },
-        // 保存联系人
+        
+        // 保存联系人（添加或更新）
         async saveContact() {
             try {
                 let response;
@@ -77,6 +85,7 @@ new Vue({
                     });
                     successMessage = 'Contact added successfully';
                 }
+                
                 if (response.ok) {
                     this.resetForm();
                     await this.fetchContacts(); // 重新加载列表
@@ -89,6 +98,7 @@ new Vue({
                 this.showMessage('Operation failed, please check the network connection', 'error');
             }
         },
+        
         // 编辑联系人
         editContact(contact) {
             this.currentContact = {
@@ -99,6 +109,7 @@ new Vue({
                 address: contact.address || ''
             };
             this.isEditing = true;
+            
             // 滚动到表单位置
             this.$nextTick(() => {
                 document.querySelector('.form-section').scrollIntoView({ 
@@ -107,6 +118,7 @@ new Vue({
                 });
             });
         },
+        
         // 删除联系人
         async deleteContact(id) {
             if (confirm('Are you sure you want to delete this contact? This operation cannot be undone')) {
@@ -114,6 +126,7 @@ new Vue({
                     const response = await fetch(`http://localhost:8080/api/contacts/${id}`, {
                         method: 'DELETE'
                     });
+                    
                     if (response.ok) {
                         await this.fetchContacts(); // 重新加载列表
                         this.showMessage('Contact deleted successfully');
@@ -126,10 +139,12 @@ new Vue({
                 }
             }
         },
+        
         // 取消编辑
         cancelEdit() {
             this.resetForm();
         },
+        
         // 重置表单
         resetForm() {
             this.currentContact = {

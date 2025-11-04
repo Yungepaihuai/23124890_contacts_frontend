@@ -1,199 +1,58 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Address book management system</title>
-    <link rel="stylesheet" href="css/style.css">
-    <!-- 使用Vue.js CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
-</head>
-<body>
-    <div id="app">
-        <!-- 顶部标题 -->
-        <header class="header">
-            <h1>📒 Address book management system</h1>
-            <p>student number: 23124890 - Front and rear end separation operation</p>
-        </header>
-
-        <!-- 主要内容区域 -->
-        <main class="main-container">
-            <!-- 添加/编辑表单 -->
-            <section class="form-section">
-                <h2>{{ isEditing ? 'Edit Contact' : 'Add Contacts' }}</h2>
-                <form @submit.prevent="saveContact" class="contact-form">
-                    <div class="form-group">
-                        <label for="name">Name:</label>
-                        <input 
-                            type="text" 
-                            id="name" 
-                            v-model="currentContact.name" 
-                            required 
-                            placeholder="Please enter a name："
-                        >
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="phone">Phone Number:</label>
-                        <input 
-                            type="text" 
-                            id="phone" 
-                            v-model="currentContact.phone" 
-                            required 
-                            placeholder="Please enter the phone number："
-                        >
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="email">Email:</label>
-                        <input 
-                            type="email" 
-                            id="email" 
-                            v-model="currentContact.email" 
-                            placeholder="Please enter an email address："
-                        >
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="address">Address:</label>
-                        <input 
-                            type="text" 
-                            id="address" 
-                            v-model="currentContact.address" 
-                            placeholder="Please enter the address:"
-                        >
-                    </div>
-                    
-                    <div class="form-buttons">
-                        <button type="submit" class="btn btn-primary">
-                            {{ isEditing ? 'Update' : 'Add' }}
-                        </button>
-                        <button 
-                            type="button" 
-                            class="btn btn-secondary" 
-                            @click="cancelEdit" 
-                            v-if="isEditing"
-                        >
-                            Cancel
-                        </button>
-                    </div>
-                </form>
-            </section>
-
-            <!-- 联系人列表 -->
-            <section class="list-section">
-                <div class="section-header">
-                    <h2>Contact List</h2>
-                    <div class="stats">
-                        <span class="count-badge">A total of: {{ contacts.length }} people</span>
-                    </div>
-                </div>
-                
-                <!-- 加载状态 -->
-                <div v-if="loading" class="loading">Loading...</div>
-                
-                <!-- 空状态 -->
-                <div v-else-if="contacts.length === 0" class="empty-state">
-                    <p>📝 There is no contact, please add the first contact!</p>
-                </div>
-                
-                <!-- 联系人列表 -->
-                <div v-else class="contacts-grid">
-                    <div 
-                        v-for="contact in contacts" 
-                        :key="contact.id" 
-                        class="contact-card"
-                    >
-                        <div class="contact-info">
-                            <h3 class="contact-name">{{ contact.name }}</h3>
-                            <p class="contact-phone">📞 {{ contact.phone }}</p>
-                            <p class="contact-email" v-if="contact.email">📧 {{ contact.email }}</p>
-                            <p class="contact-address" v-if="contact.address">📍 {{ contact.address }}</p>
-                        </div>
-                        <div class="contact-actions">
-                            <button 
-                                @click="editContact(contact)" 
-                                class="btn btn-edit"
-                            >
-                                Edit
-                            </button>
-                            <button 
-                                @click="deleteContact(contact.id)" 
-                                class="btn btn-delete"
-                            >
-                                Delete
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </main>
-
-        <!-- 消息提示 -->
-        <div v-if="message" class="message" :class="messageType">
-            {{ message }}
-        </div>
-    </div>
-
-    <script src="js/app.js"></script>
-</body>
-</html>
-
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>通讯录管理系统</title>
+    <title>Contact Management System</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>📒 通讯录管理系统</h1>
-            <p class="subtitle">纯前端版本 - 数据存储在浏览器本地</p>
+            <h1>Contact Management System</h1>
+            <p class="subtitle">Pure Frontend Version - Data Stored in Browser Local Storage</p>
         </header>
 
-        <!-- 搜索功能 -->
+        <!-- Search Functionality -->
         <div class="search-container">
-            <input type="text" id="searchInput" placeholder="搜索联系人（姓名、电话、邮箱）...">
-            <button id="clearSearch" title="清空搜索">✕</button>
+            <input type="text" id="searchInput" placeholder="Search contacts by name, phone, or email...">
+            <button id="clearSearch" title="Clear search">×</button>
         </div>
 
-        <!-- 导入导出功能 -->
+        <!-- Import/Export Functions -->
         <div class="import-export">
             <button class="btn btn-export" onclick="contactManager.exportContacts()">
-                📤 导出联系人
+                Export Contacts
             </button>
             <label class="btn btn-import" style="cursor: pointer;">
-                📥 导入联系人
+                Import Contacts
                 <input type="file" accept=".json" style="display: none;" 
                        onchange="contactManager.importContacts(event)">
             </label>
         </div>
 
-        <!-- 联系人表单 -->
+        <!-- Contact Form -->
         <div class="form-section" id="contactForm">
-            <h2>添加/编辑联系人</h2>
+            <h2>Add/Edit Contact</h2>
             <div class="form-group">
-                <input type="text" id="contactName" placeholder="姓名 *" required>
-                <input type="tel" id="contactPhone" placeholder="电话 *" required>
-                <input type="email" id="contactEmail" placeholder="邮箱">
+                <input type="text" id="contactName" placeholder="Name *" required>
+                <input type="tel" id="contactPhone" placeholder="Phone *" required>
+                <input type="email" id="contactEmail" placeholder="Email">
             </div>
-            <button id="addContactBtn" class="btn btn-primary">添加联系人</button>
+            <button id="addContactBtn" class="btn btn-primary">Add Contact</button>
         </div>
 
-        <!-- 联系人列表 -->
+        <!-- Contacts List -->
         <div class="contacts-section">
-            <h2>联系人列表</h2>
+            <h2>Contacts List</h2>
             <div id="contactsList" class="contacts-list">
-                <!-- 联系人将通过 JavaScript 动态生成 -->
+                <!-- Contacts will be dynamically generated by JavaScript -->
             </div>
         </div>
 
         <footer>
-            <p>数据存储在本浏览器中 | 
-               <a href="https://github.com/Yungepaihuai/23124890_contacts_frontend" target="_blank">查看源代码</a>
+            <p>Data stored in this browser | 
+               <a href="https://github.com/Yungepaihuai/23124890_contacts_frontend" target="_blank">View Source Code</a>
             </p>
         </footer>
     </div>

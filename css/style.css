@@ -1,4 +1,4 @@
-/* 重置和基础样式 */
+/* Reset and Base Styles */
 * {
     margin: 0;
     padding: 0;
@@ -6,295 +6,265 @@
 }
 
 body {
-    font-family: 'Microsoft YaHei', 'Segoe UI', Arial, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: #333;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
-    min-height: 100vh;
+    color: #333;
+    background-color: #f5f5f5;
+    padding: 20px;
 }
 
-/* 头部样式 */
-.header {
-    background: rgba(255, 255, 255, 0.95);
-    padding: 2rem;
-    text-align: center;
-    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(10px);
-}
-
-.header h1 {
-    color: #2c3e50;
-    margin-bottom: 0.5rem;
-    font-size: 2.5rem;
-}
-
-.header p {
-    color: #7f8c8d;
-    font-size: 1.1rem;
-}
-
-/* 主容器 */
-.main-container {
-    max-width: 1200px;
-    margin: 2rem auto;
-    padding: 0 1rem;
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 2rem;
-}
-
-/* 表单区域 */
-.form-section {
+.container {
+    max-width: 800px;
+    margin: 0 auto;
     background: white;
-    padding: 2rem;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    height: fit-content;
-    position: sticky;
-    top: 2rem;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+}
+
+/* Header Styles */
+header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #e9ecef;
+}
+
+h1 {
+    color: #2c3e50;
+    margin-bottom: 10px;
+    font-size: 2.5em;
+}
+
+.subtitle {
+    color: #7f8c8d;
+    font-size: 1.1em;
+}
+
+/* Search Container */
+.search-container {
+    position: relative;
+    margin-bottom: 25px;
+}
+
+#searchInput {
+    width: 100%;
+    padding: 15px 50px 15px 20px;
+    border: 2px solid #e9ecef;
+    border-radius: 25px;
+    font-size: 16px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+#searchInput:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 10px rgba(52, 152, 219, 0.2);
+}
+
+#clearSearch {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #95a5a6;
+    padding: 5px;
+}
+
+#clearSearch:hover {
+    color: #e74c3c;
+}
+
+/* Import/Export Buttons */
+.import-export {
+    display: flex;
+    gap: 15px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+/* Button Styles */
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.btn-primary {
+    background-color: #3498db;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #2980b9;
+}
+
+.btn-export {
+    background-color: #27ae60;
+    color: white;
+}
+
+.btn-export:hover {
+    background-color: #219a52;
+}
+
+.btn-import {
+    background-color: #e67e22;
+    color: white;
+}
+
+.btn-import:hover {
+    background-color: #d35400;
+}
+
+.btn-edit {
+    background-color: #f39c12;
+    color: white;
+    padding: 8px 16px;
+    font-size: 14px;
+}
+
+.btn-edit:hover {
+    background-color: #e67e22;
+}
+
+.btn-delete {
+    background-color: #e74c3c;
+    color: white;
+    padding: 8px 16px;
+    font-size: 14px;
+}
+
+.btn-delete:hover {
+    background-color: #c0392b;
+}
+
+/* Form Styles */
+.form-section {
+    background: #f8f9fa;
+    padding: 25px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    border-left: 4px solid #3498db;
 }
 
 .form-section h2 {
+    margin-bottom: 20px;
     color: #2c3e50;
-    margin-bottom: 1.5rem;
-    border-bottom: 3px solid #3498db;
-    padding-bottom: 0.5rem;
-}
-
-.contact-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
 }
 
 .form-group {
-    display: flex;
-    flex-direction: column;
-}
-
-.form-group label {
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-    color: #2c3e50;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 20px;
 }
 
 .form-group input {
     padding: 12px;
-    border: 2px solid #e1e8ed;
-    border-radius: 8px;
-    font-size: 1rem;
-    transition: all 0.3s ease;
+    border: 2px solid #e9ecef;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: border-color 0.3s;
 }
 
 .form-group input:focus {
     outline: none;
     border-color: #3498db;
-    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
 }
 
-.form-buttons {
-    display: flex;
-    gap: 1rem;
-    margin-top: 1rem;
+/* Contacts List */
+.contacts-section h2 {
+    margin-bottom: 20px;
+    color: #2c3e50;
 }
 
-/* 按钮样式 */
-.btn {
-    padding: 12px 24px;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    flex: 1;
+.contacts-list {
+    max-height: 500px;
+    overflow-y: auto;
 }
 
-.btn-primary {
-    background: linear-gradient(135deg, #3498db, #2980b9);
-    color: white;
-}
-
-.btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
-}
-
-.btn-secondary {
-    background: #95a5a6;
-    color: white;
-}
-
-.btn-secondary:hover {
-    background: #7f8c8d;
-}
-
-.btn-edit {
-    background: #f39c12;
-    color: white;
-}
-
-.btn-edit:hover {
-    background: #e67e22;
-}
-
-.btn-delete {
-    background: #e74c3c;
-    color: white;
-}
-
-.btn-delete:hover {
-    background: #c0392b;
-}
-
-/* 列表区域 */
-.list-section {
-    background: white;
-    padding: 2rem;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-}
-
-.section-header {
+.contact-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 2rem;
-}
-
-.section-header h2 {
-    color: #2c3e50;
-    border-bottom: 3px solid #e74c3c;
-    padding-bottom: 0.5rem;
-}
-
-.count-badge {
-    background: #3498db;
-    color: white;
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
-    font-weight: 600;
-}
-
-/* 联系人网格 */
-.contacts-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1.5rem;
-}
-
-.contact-card {
-    background: #f8f9fa;
-    border: 1px solid #e1e8ed;
-    border-radius: 12px;
-    padding: 1.5rem;
+    padding: 20px;
+    margin: 15px 0;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-left: 4px solid #3498db;
     transition: all 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
 }
 
-.contact-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-    border-color: #3498db;
+.contact-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
 .contact-info h3 {
+    margin: 0 0 10px 0;
     color: #2c3e50;
-    margin-bottom: 1rem;
-    font-size: 1.3rem;
+    font-size: 1.3em;
 }
 
-.contact-phone, .contact-email, .contact-address {
-    margin: 0.5rem 0;
-    color: #5d6d7e;
+.contact-info p {
+    margin: 5px 0;
+    color: #7f8c8d;
 }
 
 .contact-actions {
     display: flex;
-    gap: 0.5rem;
-    margin-top: 1rem;
+    gap: 10px;
 }
 
-.contact-actions .btn {
-    flex: 1;
-    padding: 8px 16px;
-    font-size: 0.9rem;
-}
-
-/* 加载和空状态 */
-.loading, .empty-state {
+/* Empty State */
+.empty-state {
     text-align: center;
-    padding: 3rem;
-    color: #7f8c8d;
-    font-size: 1.1rem;
+    padding: 60px 20px;
+    color: #95a5a6;
 }
 
 .empty-state p {
-    font-size: 1.2rem;
+    margin: 10px 0;
+    font-size: 1.1em;
 }
 
-/* 消息提示 */
+/* Message Styles */
 .message {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    padding: 1rem 2rem;
-    border-radius: 8px;
-    color: white;
+    padding: 15px 25px;
+    margin: 15px 0;
+    border-radius: 6px;
     font-weight: 600;
-    z-index: 1000;
-    animation: slideIn 0.3s ease;
+    text-align: center;
+    animation: slideDown 0.3s ease;
 }
 
-.message.success {
-    background: #27ae60;
-}
-
-.message.error {
-    background: #e74c3c;
-}
-
-@keyframes slideIn {
+@keyframes slideDown {
     from {
-        transform: translateX(100%);
         opacity: 0;
+        transform: translateY(-20px);
     }
     to {
-        transform: translateX(0);
         opacity: 1;
+        transform: translateY(0);
     }
-}
-
-/* 响应式设计 */
-@media (max-width: 768px) {
-    .main-container {
-        grid-template-columns: 1fr;
-    }
-    
-    .form-section {
-        position: static;
-    }
-    
-    .contacts-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .section-header {
-        flex-direction: column;
-        gap: 1rem;
-        align-items: flex-start;
-    }
-}
-
-/* 消息提示样式 */
-.message {
-    padding: 12px 20px;
-    margin: 10px;
-    border-radius: 5px;
-    font-weight: bold;
-    text-align: center;
 }
 
 .message-success {
@@ -315,144 +285,70 @@ body {
     border: 1px solid #bee5eb;
 }
 
-/* 空状态样式 */
-.empty-state {
+/* Footer */
+footer {
     text-align: center;
-    padding: 40px 20px;
-    color: #6c757d;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #e9ecef;
+    color: #7f8c8d;
 }
 
-.empty-state p {
-    margin: 10px 0;
+footer a {
+    color: #3498db;
+    text-decoration: none;
 }
 
-/* 联系人项样式优化 */
-.contact-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px;
-    margin: 10px 0;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    transition: transform 0.2s;
+footer a:hover {
+    text-decoration: underline;
 }
 
-.contact-item:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-}
-
-.contact-info h3 {
-    margin: 0 0 8px 0;
-    color: #333;
-}
-
-.contact-info p {
-    margin: 4px 0;
-    color: #666;
-}
-
-.contact-actions {
-    display: flex;
-    gap: 10px;
-}
-
-/* 按钮样式优化 */
-.btn-edit {
-    background-color: #ffc107;
-    color: #212529;
-}
-
-.btn-edit:hover {
-    background-color: #e0a800;
-}
-
-.btn-delete {
-    background-color: #dc3545;
-    color: white;
-}
-
-.btn-delete:hover {
-    background-color: #c82333;
-}
-
-/* 搜索框样式 */
-.search-container {
-    position: relative;
-    margin-bottom: 20px;
-}
-
-#searchInput {
-    width: 100%;
-    padding: 12px 40px 12px 15px;
-    border: 2px solid #e9ecef;
-    border-radius: 25px;
-    font-size: 16px;
-    transition: border-color 0.3s;
-}
-
-#searchInput:focus {
-    outline: none;
-    border-color: #007bff;
-}
-
-#clearSearch {
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    font-size: 18px;
-    cursor: pointer;
-    color: #6c757d;
-}
-
-#clearSearch:hover {
-    color: #dc3545;
-}
-
-/* 导入导出按钮 */
-.import-export {
-    display: flex;
-    gap: 10px;
-    margin: 15px 0;
-}
-
-.btn-export {
-    background-color: #28a745;
-    color: white;
-}
-
-.btn-export:hover {
-    background-color: #218838;
-}
-
-.btn-import {
-    background-color: #17a2b8;
-    color: white;
-}
-
-.btn-import:hover {
-    background-color: #138496;
-}
-
-/* 响应式设计 */
+/* Responsive Design */
 @media (max-width: 768px) {
+    .container {
+        padding: 20px;
+        margin: 10px;
+    }
+    
+    .form-group {
+        grid-template-columns: 1fr;
+    }
+    
     .contact-item {
         flex-direction: column;
         align-items: flex-start;
     }
     
     .contact-actions {
-        margin-top: 10px;
+        margin-top: 15px;
         width: 100%;
         justify-content: flex-end;
     }
     
     .import-export {
         flex-direction: column;
+    }
+    
+    h1 {
+        font-size: 2em;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+    
+    .container {
+        padding: 15px;
+    }
+    
+    .contact-actions {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .btn-edit, .btn-delete {
+        width: 100%;
     }
 }

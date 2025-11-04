@@ -1,4 +1,4 @@
-// 联系人管理器 - 使用 LocalStorage
+// Contact Manager Class - Uses LocalStorage
 class ContactManager {
     constructor() {
         this.storageKey = 'contacts_data';
@@ -6,77 +6,107 @@ class ContactManager {
         this.init();
     }
 
-    // 初始化
+    // Initialize the application
     init() {
-        // 如果本地存储为空，初始化示例数据
+        // Initialize with sample data if local storage is empty
         if (!localStorage.getItem(this.storageKey)) {
-            const mockContacts = [
-                { id: 1, name: "张三", phone: "13800138000", email: "zhangsan@example.com" },
-                { id: 2, name: "李四", phone: "13900139000", email: "lisi@example.com" },
-                { id: 3, name: "王五", phone: "13700137000", email: "wangwu@example.com" }
+            const sampleContacts = [
+                { id: 1, name: "John Smith", phone: "1234567890", email: "john.smith@example.com" },
+                { id: 2, name: "Emily Johnson", phone: "0987654321", email: "emily.johnson@example.com" },
+                { id: 3, name: "Michael Brown", phone: "5551234567", email: "michael.brown@example.com" }
             ];
-            this.saveContacts(mockContacts);
+            this.saveContacts(sampleContacts);
         }
         this.setupEventListeners();
         this.displayContacts();
     }
 
-    // 设置事件监听器
+    // Set up all event listeners
     setupEventListeners() {
-        // 添加联系人按钮
+        // Add contact button
         document.getElementById('addContactBtn').addEventListener('click', () => {
             this.addContactFromForm();
         });
 
-        // 搜索功能
+        // Search functionality
         document.getElementById('searchInput').addEventListener('input', (e) => {
             this.searchContacts(e.target.value);
         });
 
-        // 清空搜索
+        // Clear search
         document.getElementById('clearSearch').addEventListener('click', () => {
             document.getElementById('searchInput').value = '';
             this.displayContacts();
         });
+
+        // Allow form submission with Enter key
+        document.getElementById('contactForm').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                this.addContactFromForm();
+            }
+        });
     }
 
-    // 获取所有联系人
+    // Get all contacts from local storage
     getContacts() {
         const data = localStorage.getItem(this.storageKey);
         return data ? JSON.parse(data) : [];
     }
 
-    // 保存联系人列表
+    // Save contacts to local storage
     saveContacts(contacts) {
         localStorage.setItem(this.storageKey, JSON.stringify(contacts));
     }
 
-    // 从表单添加联系人
+    // Add contact from form data
     addContactFromForm() {
         const name = document.getElementById('contactName').value.trim();
         const phone = document.getElementById('contactPhone').value.trim();
         const email = document.getElementById('contactEmail').value.trim();
 
-        if (!name || !phone) {
-            alert('姓名和电话是必填项！');
+        // Validation
+        if (!name) {
+            this.showMessage('Name is required!', 'error');
+            document.getElementById('contactName').focus();
+            return;
+        }
+
+        if (!phone) {
+            this.showMessage('Phone number is required!', 'error');
+            document.getElementById('contactPhone').focus();
+            return;
+        }
+
+        // Basic phone validation
+        if (!this.isValidPhone(phone)) {
+            this.showMessage('Please enter a valid phone number!', 'error');
+            document.getElementById('contactPhone').focus();
+            return;
+        }
+
+        // Basic email validation (if provided)
+        if (email && !this.isValidEmail(email)) {
+            this.showMessage('Please enter a valid email address!', 'error');
+            document.getElementById('contactEmail').focus();
             return;
         }
 
         if (this.currentEditId) {
-            // 编辑模式
+            // Edit mode
             this.updateContact(this.currentEditId, { name, phone, email });
             this.currentEditId = null;
-            document.getElementById('addContactBtn').textContent = '添加联系人';
+            document.getElementById('addContactBtn').textContent = 'Add Contact';
+            this.showMessage('Contact updated successfully!', 'success');
         } else {
-            // 添加模式
+            // Add mode
             this.addContact({ name, phone, email });
         }
 
-        // 清空表单
+        // Clear form
         this.clearForm();
     }
 
-    // 添加联系人
+    // Add a new contact
     addContact(contact) {
         const contacts = this.getContacts();
         const newId = contacts.length > 0 ? Math.max(...contacts.map(c => c.id)) + 1 : 1;
@@ -84,13 +114,11 @@ class ContactManager {
         contacts.push(newContact);
         this.saveContacts(contacts);
         this.displayContacts();
-        
-        // 显示成功消息
-        this.showMessage(`联系人 "${contact.name}" 添加成功！`, 'success');
+        this.showMessage(`Contact "${contact.name}" added successfully!`, 'success');
         return newContact;
     }
 
-    // 更新联系人
+    // Update an existing contact
     updateContact(id, updatedContact) {
         const contacts = this.getContacts();
         const index = contacts.findIndex(contact => contact.id === id);
@@ -99,69 +127,74 @@ class ContactManager {
             contacts[index] = { ...updatedContact, id: id };
             this.saveContacts(contacts);
             this.displayContacts();
-            
-            // 显示成功消息
-            this.showMessage(`联系人 "${oldName}" 更新成功！`, 'success');
+            this.showMessage(`Contact "${oldName}" updated successfully!`, 'success');
             return true;
         }
         return false;
     }
 
-    // 删除联系人
+    // Delete a contact
     deleteContact(id) {
         const contacts = this.getContacts();
         const contactToDelete = contacts.find(contact => contact.id === id);
         const contactName = contactToDelete ? contactToDelete.name : '';
 
-        if (confirm(`确定要删除联系人 "${contactName}" 吗？`)) {
+        if (confirm(`Are you sure you want to delete contact "${contactName}"?`)) {
             const filteredContacts = contacts.filter(contact => contact.id !== id);
             this.saveContacts(filteredContacts);
             this.displayContacts();
-            
-            // 显示成功消息
-            this.showMessage(`联系人 "${contactName}" 删除成功！`, 'success');
+            this.showMessage(`Contact "${contactName}" deleted successfully!`, 'success');
             return true;
         }
         return false;
     }
 
-    // 编辑联系人
+    // Edit a contact (populate form with contact data)
     editContact(id) {
         const contacts = this.getContacts();
         const contact = contacts.find(contact => contact.id === id);
         if (contact) {
-            // 填充表单
+            // Populate form
             document.getElementById('contactName').value = contact.name;
             document.getElementById('contactPhone').value = contact.phone;
             document.getElementById('contactEmail').value = contact.email || '';
             
-            // 切换到编辑模式
+            // Switch to edit mode
             this.currentEditId = id;
-            document.getElementById('addContactBtn').textContent = '更新联系人';
+            document.getElementById('addContactBtn').textContent = 'Update Contact';
             
-            // 滚动到表单
+            // Scroll to form
             document.getElementById('contactForm').scrollIntoView({ behavior: 'smooth' });
+            
+            // Focus on name field
+            document.getElementById('contactName').focus();
         }
     }
 
-    // 搜索联系人
+    // Search contacts by name, phone, or email
     searchContacts(keyword) {
         const contacts = this.getContacts();
-        if (!keyword) {
+        if (!keyword.trim()) {
             this.displayContacts(contacts);
             return;
         }
 
+        const searchTerm = keyword.toLowerCase();
         const filteredContacts = contacts.filter(contact => 
-            contact.name.toLowerCase().includes(keyword.toLowerCase()) ||
-            contact.phone.includes(keyword) ||
-            (contact.email && contact.email.toLowerCase().includes(keyword.toLowerCase()))
+            contact.name.toLowerCase().includes(searchTerm) ||
+            contact.phone.includes(searchTerm) ||
+            (contact.email && contact.email.toLowerCase().includes(searchTerm))
         );
         
         this.displayContacts(filteredContacts);
+        
+        // Show search results message
+        if (filteredContacts.length === 0) {
+            this.showMessage('No contacts found matching your search.', 'info');
+        }
     }
 
-    // 显示联系人列表
+    // Display contacts in the list
     displayContacts(contacts = null) {
         const contactsToDisplay = contacts || this.getContacts();
         const contactsList = document.getElementById('contactsList');
@@ -169,8 +202,8 @@ class ContactManager {
         if (contactsToDisplay.length === 0) {
             contactsList.innerHTML = `
                 <div class="empty-state">
-                    <p>暂无联系人</p>
-                    <p>点击"添加联系人"按钮开始添加</p>
+                    <p>No contacts found</p>
+                    <p>Click "Add Contact" to create your first contact</p>
                 </div>
             `;
             return;
@@ -180,58 +213,58 @@ class ContactManager {
             <div class="contact-item" data-id="${contact.id}">
                 <div class="contact-info">
                     <h3>${this.escapeHtml(contact.name)}</h3>
-                    <p>📞 ${this.escapeHtml(contact.phone)}</p>
-                    ${contact.email ? `<p>📧 ${this.escapeHtml(contact.email)}</p>` : ''}
+                    <p>Phone: ${this.escapeHtml(contact.phone)}</p>
+                    ${contact.email ? `<p>Email: ${this.escapeHtml(contact.email)}</p>` : ''}
                 </div>
                 <div class="contact-actions">
-                    <button class="btn-edit" onclick="contactManager.editContact(${contact.id})">编辑</button>
-                    <button class="btn-delete" onclick="contactManager.deleteContact(${contact.id})">删除</button>
+                    <button class="btn btn-edit" onclick="contactManager.editContact(${contact.id})">Edit</button>
+                    <button class="btn btn-delete" onclick="contactManager.deleteContact(${contact.id})">Delete</button>
                 </div>
             </div>
         `).join('');
     }
 
-    // 清空表单
+    // Clear the form
     clearForm() {
         document.getElementById('contactName').value = '';
         document.getElementById('contactPhone').value = '';
         document.getElementById('contactEmail').value = '';
+        document.getElementById('contactName').focus();
     }
 
-    // 显示消息
+    // Show message to user
     showMessage(message, type = 'info') {
-        // 移除现有消息
+        // Remove existing message
         const existingMessage = document.querySelector('.message');
         if (existingMessage) {
             existingMessage.remove();
         }
 
-        // 创建新消息
+        // Create new message
         const messageDiv = document.createElement('div');
         messageDiv.className = `message message-${type}`;
         messageDiv.textContent = message;
         
-        // 添加到页面顶部
-        document.body.insertBefore(messageDiv, document.body.firstChild);
+        // Add to page (after header)
+        const header = document.querySelector('header');
+        header.parentNode.insertBefore(messageDiv, header.nextSibling);
         
-        // 3秒后自动消失
+        // Auto remove after 4 seconds
         setTimeout(() => {
             if (messageDiv.parentNode) {
                 messageDiv.remove();
             }
-        }, 3000);
+        }, 4000);
     }
 
-    // HTML转义，防止XSS
-    escapeHtml(text) {
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
-    }
-
-    // 导出联系人（可选功能）
+    // Export contacts to JSON file
     exportContacts() {
         const contacts = this.getContacts();
+        if (contacts.length === 0) {
+            this.showMessage('No contacts to export!', 'error');
+            return;
+        }
+
         const dataStr = JSON.stringify(contacts, null, 2);
         const dataBlob = new Blob([dataStr], { type: 'application/json' });
         
@@ -240,10 +273,10 @@ class ContactManager {
         link.download = 'contacts_backup.json';
         link.click();
         
-        this.showMessage('联系人导出成功！', 'success');
+        this.showMessage('Contacts exported successfully!', 'success');
     }
 
-    // 导入联系人（可选功能）
+    // Import contacts from JSON file
     importContacts(event) {
         const file = event.target.files[0];
         if (!file) return;
@@ -253,28 +286,75 @@ class ContactManager {
             try {
                 const contacts = JSON.parse(e.target.result);
                 if (Array.isArray(contacts)) {
-                    this.saveContacts(contacts);
-                    this.displayContacts();
-                    this.showMessage('联系人导入成功！', 'success');
+                    // Validate contacts structure
+                    const validContacts = contacts.filter(contact => 
+                        contact && typeof contact === 'object' && 
+                        contact.name && contact.phone
+                    );
+                    
+                    if (validContacts.length > 0) {
+                        this.saveContacts(validContacts);
+                        this.displayContacts();
+                        this.showMessage(`Successfully imported ${validContacts.length} contacts!`, 'success');
+                    } else {
+                        throw new Error('No valid contacts found in file');
+                    }
                 } else {
-                    throw new Error('文件格式错误');
+                    throw new Error('Invalid file format');
                 }
             } catch (error) {
-                this.showMessage('导入失败：文件格式不正确', 'error');
+                this.showMessage('Import failed: Invalid file format', 'error');
+                console.error('Import error:', error);
             }
+        };
+        reader.onerror = () => {
+            this.showMessage('Error reading file', 'error');
         };
         reader.readAsText(file);
         
-        // 清空文件输入
+        // Clear file input
         event.target.value = '';
+    }
+
+    // Utility: HTML escape to prevent XSS
+    escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    // Utility: Validate email format
+    isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
+
+    // Utility: Validate phone format (basic)
+    isValidPhone(phone) {
+        // Allow numbers, spaces, hyphens, parentheses
+        const phoneRegex = /^[\d\s\-\(\)\+]+$/;
+        return phoneRegex.test(phone) && phone.replace(/\D/g, '').length >= 7;
+    }
+
+    // Get contact statistics
+    getStats() {
+        const contacts = this.getContacts();
+        return {
+            total: contacts.length,
+            withEmail: contacts.filter(c => c.email).length,
+            withoutEmail: contacts.filter(c => !c.email).length
+        };
     }
 }
 
-// 创建全局联系管理器实例
+// Create global contact manager instance
 const contactManager = new ContactManager();
 
-// 页面加载完成后初始化
+// Page loaded event
 document.addEventListener('DOMContentLoaded', function() {
-    // 所有初始化逻辑已经在 ContactManager 构造函数中处理
-    console.log('通讯录系统已初始化');
+    console.log('Contact Management System initialized successfully');
+    
+    // Display initial stats in console (for debugging)
+    const stats = contactManager.getStats();
+    console.log(`Loaded ${stats.total} contacts (${stats.withEmail} with email)`);
 });

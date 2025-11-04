@@ -138,3 +138,66 @@
     <script src="js/app.js"></script>
 </body>
 </html>
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>通讯录管理系统</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📒 通讯录管理系统</h1>
+            <p class="subtitle">纯前端版本 - 数据存储在浏览器本地</p>
+        </header>
+
+        <!-- 搜索功能 -->
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="搜索联系人（姓名、电话、邮箱）...">
+            <button id="clearSearch" title="清空搜索">✕</button>
+        </div>
+
+        <!-- 导入导出功能 -->
+        <div class="import-export">
+            <button class="btn btn-export" onclick="contactManager.exportContacts()">
+                📤 导出联系人
+            </button>
+            <label class="btn btn-import" style="cursor: pointer;">
+                📥 导入联系人
+                <input type="file" accept=".json" style="display: none;" 
+                       onchange="contactManager.importContacts(event)">
+            </label>
+        </div>
+
+        <!-- 联系人表单 -->
+        <div class="form-section" id="contactForm">
+            <h2>添加/编辑联系人</h2>
+            <div class="form-group">
+                <input type="text" id="contactName" placeholder="姓名 *" required>
+                <input type="tel" id="contactPhone" placeholder="电话 *" required>
+                <input type="email" id="contactEmail" placeholder="邮箱">
+            </div>
+            <button id="addContactBtn" class="btn btn-primary">添加联系人</button>
+        </div>
+
+        <!-- 联系人列表 -->
+        <div class="contacts-section">
+            <h2>联系人列表</h2>
+            <div id="contactsList" class="contacts-list">
+                <!-- 联系人将通过 JavaScript 动态生成 -->
+            </div>
+        </div>
+
+        <footer>
+            <p>数据存储在本浏览器中 | 
+               <a href="https://github.com/Yungepaihuai/23124890_contacts_frontend" target="_blank">查看源代码</a>
+            </p>
+        </footer>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

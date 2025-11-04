@@ -1,39 +1,56 @@
-# Address Book Management System-Front End
-
-23124890_contacts_frontend
+# Contact Management System Frontend
 
 ## Project Introduction
+  A pure frontend contact management system that uses browser local storage for data persistence. 
+  This project demonstrates a complete frontend backend separation architecture without requiring any server side components.
 
-    The front-end of the address book management system based on
-Vue.js adopts the front-end and back-end separation architecture.
+## Technology Stack
+  HTML5
+  CSS3
+  JavaScript (ES6+)
+  LocalStorage (Data Storage)
 
-## Technology stack
+## Features
 
-- HTML5
-- CSS3
-- JavaScript (ES6+)
-- Vue.js 2.x
+### Core Functions
+  Add contacts
+  Edit contacts
+  Delete contacts
+  Search contacts
+  Local data persistence
 
-## Functional features
+### Additional Functions
+  Export contacts (JSON format)
+  Import contacts
+  Responsive design
+  Modern UI interface
 
-- Add contacts
-- Edit contact
-- Delete contact
-- View contact list
-- Responsive design
+## Live Demo
+  Access URL: https://yungepaihuai.github.io/23124890_contacts_frontend/
 
-## Operating instructions
+## Architecture Description
+  This project uses a pure frontend architecture with the following characteristics:
 
-### Method 1: Open directly
-1. Open with a browser `index.html`
-2. Ensure that the back-end service is running in `http://localhost:8080`
+### Data Storage
+  Uses localStorage for data persistence
+  Data is only valid in the current browser
+  Supports data import and export
 
-### Method 2: Use Live Server (recommended)
-1. Install Live Server plug-in in VS Code
-2. Right click `index.html` choose "Open with Live Server"
+### Advantages
+  Zero backend dependencies No server required
+  Offline available All functions work offline
+  Fast response No network request delays
+  Privacy security Data stored locally on user's device
 
-### Method 3: Access via GitHub Pages
-Visit: https://yungepaihuai.github.io/23124890_contacts_frontend/
+## Local Development
+  1. Open index.html file directly
+  2. Or use a local server:
+   ```bash
+   Using Python
+   python m http.server 8000
+   
+   Using Node.js
+   npx http server
 
 ## Project structure
 23124890_contacts_frontend/
@@ -42,6 +59,7 @@ Visit: https://yungepaihuai.github.io/23124890_contacts_frontend/
 ├── js/
 │   ├── app.js
 ├── lib/
+├── .gitignore
 ├── index.html
 ├── README.md
 ├── codestyle.md
